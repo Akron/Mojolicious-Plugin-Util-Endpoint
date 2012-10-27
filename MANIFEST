@@ -1,0 +1,7 @@
+lib/Mojolicious/Plugin/Util/Endpoint.pm
+lib/Mojolicious/Plugin/Util/Endpoint/endpoints.pm
+t/Endpoint.t
+Changes
+MANIFEST
+LICENSE
+Makefile.PL

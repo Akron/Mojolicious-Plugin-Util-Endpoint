@@ -1,0 +1,159 @@
+=pod
+
+=head1 NAME
+
+Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
+
+
+=head1 SYNOPSIS
+
+  # Mojolicious
+  $self->plugin('Util::Endpoint');
+
+  # Mojolicious::Lite
+  plugin 'Util::Endpoint';
+
+  my $route = $mojo->routes->route('/:user');
+
+  # Set endpoint
+  $route->endpoint(
+           webfinger => {
+              scheme => 'https',
+              host   => 'sojolicio.us',
+              route  => $route,
+              query  => [
+                q => '{uri}'
+              ]
+            });
+
+  return $self->endpoint('webfinger');
+  # https://sojolicio.us/{user}?q={uri}
+
+  $self->stash(user => 'Akron');
+
+  return $self->endpoint('webfinger');
+  # https://sojolicio.us/Akron?q={uri}
+
+  return $self->endpoint('webfinger' => {
+                            uri => 'acct:akron@sojolicio.us'
+                         });
+  # https://sojolicio.us/Akron?q=acct%3Aakron%40sojolicio.us
+
+
+=head1 DESCRIPTION
+
+L<Mojolicious::Plugin::Util::Endpoint> is a plugin that
+allows for the simple establishement of endpoint URIs.
+This is similar to the C<url_for> method of L<Mojolicious::Controller>,
+but includes support for template URIs with parameters
+(as used in, e.g., Host-Meta or OpenSearch).
+
+
+=head1 METHODS
+
+=head2 C<register>
+
+  # Mojolicious
+  $app->plugin('Util::Endpoint');
+
+  # Mojolicious::Lite
+  plugin 'Util::Endpoint';
+
+Called when registering the plugin.
+
+
+=head1 SHORTCUTS
+
+=head2 C<endpoint>
+
+  my $route = $mojo->routes->route('/suggest');
+  $route->endpoint('opensearch' => {
+                      scheme => 'https',
+                      host   => 'sojolicio.us',
+                      port   => 3000,
+                      query  => [
+                        q     => '{searchTerms}',
+                        start => '{startIndex?}'
+                      ]
+                    });
+
+Establishes an endpoint defined for a service.
+It accepts optional parameters C<scheme>, C<host>,
+a C<port> and query parameters (C<query>).
+Template parameters need curly brackets, optional
+template parameters need a question mark before
+the closing bracket.
+Optional path placeholders are currenty not supported.
+
+
+=head1 HELPER
+
+=head2 C<endpoint>
+
+  # In Controller:
+  return $self->endpoint('webfinger');
+  return $self->endpoint('webfinger', { user => 'me' } );
+
+Returns the endpoint defined for a specific service.
+It accepts additional stash values for the route.
+These stash values override existing stash values from
+the controller and fill the template variables.
+
+  # In Controller:
+  return $self->endpoint('opensearch');
+  # https://sojolicio.us/suggest?q={searchTerms}
+                                &start={startIndex?}
+
+  return $self->endpoint('opensearch' => {
+                            searchTerms => 'simpson',
+                            '?' => undef
+                         });
+  # https://sojolicio.us/suggest?q=simpson
+
+The special parameter C<?> can be set to C<undef> to ignore
+all undefined optional template parameters.
+
+If the defined endpoint can't be found, the value for C<url_for>
+is returned.
+
+
+=head2 C<get_endpoints>
+
+  # In Controller:
+  my $hash = $self->get_endpoints;
+
+  while (my ($key, $value) = each %$hash) {
+    print $key, ' => ', $value, "\n";
+  };
+
+Returns a hash of all endpoints, interpolated with the current
+controller stash.
+
+
+=head1 COMMANDS
+
+=head2 C<endpoints>
+
+  perl app.pl endpoints
+
+Show all endpoints established by this plugin.
+
+
+=head1 DEPENDENCIES
+
+L<Mojolicious> (best with SSL support).
+
+
+=head1 AVAILABILITY
+
+  https://github.com/Akron/Mojolicious-Plugin-Util-Endpoint
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2011-2012, Nils Diewald.
+
+This program is free software, you can redistribute it
+and/or modify it under the same terms as Perl.
+
+=cut
