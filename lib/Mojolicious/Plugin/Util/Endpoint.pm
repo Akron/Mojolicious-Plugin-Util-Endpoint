@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -49,11 +49,10 @@ sub register {
 	  $name => %placeholders
 	)->to_abs->clone;
 
-      for ($endpoint_url) {
-	$_->host($param->{host})     if exists $param->{host};
-	$_->port($param->{port})     if exists $param->{port};
-	$_->scheme($param->{scheme}) if exists $param->{scheme};
-	$_->query($param->{query})   if exists $param->{query};
+      for my $url ($endpoint_url) {
+	foreach (qw/host port scheme query/) {
+	  $url->$_($param->{$_}) if exists $param->{$_};
+	};
       };
 
       # Set to stash
@@ -184,18 +183,15 @@ Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
   # Mojolicious::Lite
   plugin 'Util::Endpoint';
 
-  my $route = $mojo->routes->route('/:user');
+  my $r = $mojo->routes;
 
   # Set endpoint
-  $route->endpoint(
-           webfinger => {
-              scheme => 'https',
-              host   => 'sojolicio.us',
-              route  => $route,
-              query  => [
-                q => '{uri}'
-              ]
-            });
+  $r->route('/:user')->endpoint(
+    webfinger => {
+      query  => [
+        q => '{uri}'
+      ]
+    });
 
   return $self->endpoint('webfinger');
   # https://sojolicio.us/{user}?q={uri}
@@ -205,16 +201,16 @@ Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
   return $self->endpoint('webfinger');
   # https://sojolicio.us/Akron?q={uri}
 
-  return $self->endpoint('webfinger' => {
-                            uri => 'acct:akron@sojolicio.us'
-                         });
+  return $self->endpoint(webfinger => {
+    uri => 'acct:akron@sojolicio.us'
+  });
   # https://sojolicio.us/Akron?q=acct%3Aakron%40sojolicio.us
 
 
 =head1 DESCRIPTION
 
 L<Mojolicious::Plugin::Util::Endpoint> is a plugin that
-allows for the simple establishement of endpoint URIs.
+allows for the simple establishment of endpoint URIs.
 This is similar to the C<url_for> method of L<Mojolicious::Controller>,
 but includes support for template URIs with parameters
 (as used in, e.g., Host-Meta or OpenSearch).
@@ -237,33 +233,34 @@ Called when registering the plugin.
 
 =head2 C<endpoint>
 
-  my $route = $mojo->routes->route('/suggest');
-  $route->endpoint('opensearch' => {
-                      scheme => 'https',
-                      host   => 'sojolicio.us',
-                      port   => 3000,
-                      query  => [
-                        q     => '{searchTerms}',
-                        start => '{startIndex?}'
-                      ]
-                    });
+  my $r = $mojo->routes
+  $r->route('/suggest')->endpoint(opensearch => {
+    scheme => 'https',
+    host   => 'sojolicio.us',
+    port   => 3000,
+    query  => [
+      q     => '{searchTerms}',
+      start => '{startIndex?}'
+    ]
+  });
 
 Establishes an endpoint defined for a service.
 It accepts optional parameters C<scheme>, C<host>,
-a C<port> and query parameters (C<query>).
+a C<port> and query parameters (C<query>),
+overwriting the current values of C<url_for>.
 Template parameters need curly brackets, optional
 template parameters need a question mark before
 the closing bracket.
 Optional path placeholders are currenty not supported.
 
 
-=head1 HELPER
+=head1 HELPERS
 
 =head2 C<endpoint>
 
   # In Controller:
   return $self->endpoint('webfinger');
-  return $self->endpoint('webfinger', { user => 'me' } );
+  return $self->endpoint(webfinger => { user => 'me' } );
 
 Returns the endpoint defined for a specific service.
 It accepts additional stash values for the route.
@@ -272,13 +269,12 @@ the controller and fill the template variables.
 
   # In Controller:
   return $self->endpoint('opensearch');
-  # https://sojolicio.us/suggest?q={searchTerms}
-                                &start={startIndex?}
+  # https://sojolicio.us/suggest?q={searchTerms}&start={startIndex?}
 
-  return $self->endpoint('opensearch' => {
-                            searchTerms => 'simpson',
-                            '?' => undef
-                         });
+  return $self->endpoint(opensearch => {
+    searchTerms => 'simpson',
+    '?' => undef
+  });
   # https://sojolicio.us/suggest?q=simpson
 
 The special parameter C<?> can be set to C<undef> to ignore
@@ -307,7 +303,7 @@ controller stash.
 
   perl app.pl endpoints
 
-Show all endpoints established by this plugin.
+Show all endpoints of the app established by this plugin.
 
 
 =head1 DEPENDENCIES

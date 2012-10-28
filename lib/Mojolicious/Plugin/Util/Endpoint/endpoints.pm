@@ -28,12 +28,12 @@ sub run {
 
   # Print all endpoints
   while (my ($name, $path) = each %$endpoints) {
-    printf " %-20s %s\n", '"' . $name . '"', $path;
+    printf " %-20s %s\n", qq{"$name"}, $path;
   };
   print "\n";
 
   return;
-}
+};
 
 
 1;
@@ -99,7 +99,7 @@ L<Mojolicious::Plugin::Util::Endpoint>.
 
 =head1 AVAILABILITY
 
-  https://github.com/Akron/Sojolicious
+  https://github.com/Akron/Mojolicious-Plugin-Util-Endpoint
 
 
 =head1 COPYRIGHT AND LICENSE
