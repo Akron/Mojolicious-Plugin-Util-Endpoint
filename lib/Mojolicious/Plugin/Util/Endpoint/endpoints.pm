@@ -10,7 +10,7 @@ usage: $0 endpoints
 EOF
 
 
-# Run oro_init
+# Run endpoints
 sub run {
   my $self = shift;
 
@@ -59,6 +59,11 @@ Mojolicious::Plugin::Util::Endpoint::endpoints - Show endpoints
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> shows all
 endpoints established by L<Mojolicious::Plugin::Util::Endpoint>.
 
+It is normally started from the command line:
+
+  $ perl app.pl endpoints
+
+
 =head1 ATTRIBUTES
 
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
@@ -79,6 +84,7 @@ Short description of this command, used for the command list.
 
 Usage information for this command, used for the help screen.
 
+
 =head1 METHODS
 
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
@@ -86,7 +92,7 @@ methods from L<Mojo::Command> and implements the following new ones.
 
 =head2 C<run>
 
-  $oro_init->run;
+  $ep->run;
 
 Run this command.
 

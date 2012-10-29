@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -15,7 +15,7 @@ our %endpoints;
 sub register {
   my ($plugin, $mojo) = @_;
 
-  # Add endpoints command
+  # Add 'endpoints' command
   push @{$mojo->commands->namespaces}, __PACKAGE__;
 
   # Add 'endpoint' shortcut
@@ -186,7 +186,7 @@ Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
   my $rs = $mojo->routes;
 
   # Set endpoint
-  $r = $rs->route('/:user')->endpoint(
+  my $r = $rs->route('/:user')->endpoint(
     webfinger => {
       query  => [
         q => '{uri}'
@@ -233,16 +233,17 @@ Called when registering the plugin.
 
 =head2 C<endpoint>
 
-  my $r = $mojo->routes
-  $r = $r->route('/suggest')->endpoint(opensearch => {
-    scheme => 'https',
-    host   => 'sojolicio.us',
-    port   => 3000,
-    query  => [
-      q     => '{searchTerms}',
-      start => '{startIndex?}'
-    ]
-  });
+  my $rs = $mojo->routes
+  my $r = $rs->route('/suggest')->endpoint(
+    opensearch => {
+      scheme => 'https',
+      host   => 'sojolicio.us',
+      port   => 3000,
+      query  => [
+        q     => '{searchTerms}',
+        start => '{startIndex?}'
+      ]
+    });
 
 Establishes an endpoint defined for a service.
 It accepts optional parameters C<scheme>, C<host>,
@@ -264,6 +265,9 @@ Returns the route.
   # In Controller:
   return $self->endpoint('webfinger');
   return $self->endpoint(webfinger => { user => 'me' } );
+
+  # In Template:
+  <%= endpoint 'webfinger' %>
 
 Returns the endpoint defined for a specific service.
 It accepts additional stash values for the route.
@@ -304,7 +308,7 @@ controller stash.
 
 =head2 C<endpoints>
 
-  perl app.pl endpoints
+  $ perl app.pl endpoints
 
 Show all endpoints of the app established by this plugin.
 
