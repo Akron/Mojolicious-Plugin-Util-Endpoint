@@ -93,14 +93,23 @@ Returns the route.
 =head2 C<endpoint>
 
   # In Controller:
+  #   Set endpoints:
+  $self->endpoint(hub => 'http://pubsubhubbub.appspot.com/');
+  $self->endpoint(hub => Mojo::URL->new('http://pubsubhubbub.appspot.com/'));
+
+  #   Get endpoints:
   return $self->endpoint('webfinger');
   return $self->endpoint(webfinger => { user => 'me' } );
 
   # In Template:
   <%= endpoint 'webfinger' %>
 
-Returns the endpoint defined for a specific service.
-It accepts additional stash values for the route.
+Get or set endpoints defined for a specific service.
+For setting accepts the name of the endpoint and
+a either a string with the endpoint URI or a L<Mojo::URL> object.
+
+Fr getting it accepts the name of the endpoint and
+additional stash values for the route.
 These stash values override existing stash values from
 the controller and fill the template variables.
 
@@ -133,6 +142,7 @@ is returned.
 Returns a hash of all endpoints, interpolated with the current
 controller stash.
 
+B<Note:> This helper is EXPERIMENTAL and may be deprecated in further releases.
 
 =head1 COMMANDS
 

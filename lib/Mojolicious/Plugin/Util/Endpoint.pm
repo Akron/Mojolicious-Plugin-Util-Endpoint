@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -38,7 +38,7 @@ sub register {
       $r->pattern->match('/');
       while ($r) {
 	foreach (@{$r->pattern->placeholders}) {
-	  $placeholders{$_} = '{' . $_ . '}';
+	  $placeholders{$_} = "{$_}";
 	};
 	$r = $r->parent;
       };
@@ -68,6 +68,16 @@ sub register {
       my $name        = shift;
       my $given_param = shift || {};
 
+      # Define endpoint by string
+      unless (ref $given_param) {
+	return ($endpoints{$name} = Mojo::URL->new($given_param));
+      }
+
+      # Define endpoint by Mojo::URL
+      elsif (ref $given_param eq 'Mojo::URL') {
+	return ($endpoints{$name} = $given_param->clone);
+      };
+
       # Endpoint undefined
       unless (defined $endpoints{$name}) {
 	$c->app->log->warn("No endpoint defined for $name.");
@@ -92,6 +102,7 @@ sub register {
 	$_->port($req_url->port) unless $_->port;
       };
 
+      # Convert object to string
       my $endpoint = $endpoint_url->to_abs->to_string;
 
       # Unescape template variables
@@ -148,7 +159,7 @@ sub register {
 
   # Add 'get_endpoints' helper
   $mojo->helper(
-    'get_endpoints' => sub {
+    get_endpoints => sub {
       my $c = shift;
 
       # Get all endpoints
@@ -263,14 +274,23 @@ Returns the route.
 =head2 C<endpoint>
 
   # In Controller:
+  #   Set endpoints:
+  $self->endpoint(hub => 'http://pubsubhubbub.appspot.com/');
+  $self->endpoint(hub => Mojo::URL->new('http://pubsubhubbub.appspot.com/'));
+
+  #   Get endpoints:
   return $self->endpoint('webfinger');
   return $self->endpoint(webfinger => { user => 'me' } );
 
   # In Template:
   <%= endpoint 'webfinger' %>
 
-Returns the endpoint defined for a specific service.
-It accepts additional stash values for the route.
+Get or set endpoints defined for a specific service.
+For setting accepts the name of the endpoint and
+a either a string with the endpoint URI or a L<Mojo::URL> object.
+
+Fr getting it accepts the name of the endpoint and
+additional stash values for the route.
 These stash values override existing stash values from
 the controller and fill the template variables.
 
@@ -303,6 +323,7 @@ is returned.
 Returns a hash of all endpoints, interpolated with the current
 controller stash.
 
+B<Note:> This helper is EXPERIMENTAL and may be deprecated in further releases.
 
 =head1 COMMANDS
 

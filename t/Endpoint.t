@@ -4,9 +4,12 @@ use warnings;
 
 $|++;
 
-use lib '../../lib';
+BEGIN {
+  our @INC;
+  unshift(@INC, '../../lib', '../lib');
+};
 
-use Test::More tests => 23;
+use Test::More tests => 42;
 use Test::Mojo;
 
 use Mojolicious::Lite;
@@ -183,3 +186,70 @@ is ($hash->{test5},
 is ($hash->{test6},
     '/suggest?a={foo?}&b={bar?}&c={foo}&d={BAR}&e={test:foo?}&f=*',
     'hash-test 6');
+
+# Define by string
+ok($app->endpoint(test7 => 'http://grimms-abenteuer.de/test'), 'Define by string');
+is($app->endpoint('test7'), 'http://grimms-abenteuer.de/test', 'Define by string');
+
+# Define by URL
+ok($app->endpoint(test8 => Mojo::URL->new('/hi/test')), 'Define by URL');
+is($app->endpoint('test8'), '/hi/test', 'Define by URL');
+
+# Define by string
+ok($app->endpoint(test9 => 'http://grimms-abenteuer.de/test?q={try}'),
+   'Define by string');
+is($app->endpoint('test9' => { try => 'Akron'}),
+   'http://grimms-abenteuer.de/test?q=Akron',
+   'Define by string');
+
+# Define by string
+ok($app->endpoint(test10 => 'http://grimms-abenteuer.de/test?q={try}&p={ready?}'),
+   'Define by string');
+is($app->endpoint('test10' => { try => 'Akron'}),
+   'http://grimms-abenteuer.de/test?q=Akron&p={ready?}',
+   'Define by string');
+is($app->endpoint('test10' => { try => 'Akron', ready => 'yeah'}),
+   'http://grimms-abenteuer.de/test?q=Akron&p=yeah',
+   'Define by string');
+is($app->endpoint('test10' => { try => 'Akron', '?' => undef}),
+   'http://grimms-abenteuer.de/test?q=Akron',
+   'Define by string');
+
+# Test with placeholders
+my $r_test_2 = $app->routes->route('/:placeholder');
+$r_test_2->endpoint('check');
+is($app->endpoint('check'), '/{placeholder}', 'Check path placeholder');
+is($app->endpoint('check' => {
+  placeholder => 'try'
+}), '/try', 'Check path placeholder');
+
+my $r_test_3 = $app->routes->route('/:placeholder/:try');
+$r_test_3->endpoint('check2');
+is($app->endpoint('check2'), '/{placeholder}/{try}',
+   'Check path placeholder 2');
+is($app->endpoint('check2' => {
+  placeholder => 'try1',
+}), '/try1/{try}', 'Check path placeholder 2');
+is($app->endpoint('check2' => {
+  placeholder => 'try1',
+  try => 'try2'
+}), '/try1/try2', 'Check path placeholder 2');
+
+my $r_test_4 = $app->routes->route('/:placeholder/:try');
+$r_test_4->endpoint('check3' => {
+  query => [ q => '{test}' ]
+});
+is($app->endpoint('check3'), '/{placeholder}/{try}?q={test}',
+   'Check path placeholder 3');
+is($app->endpoint('check3' => {
+  placeholder => 'try1',
+}), '/try1/{try}?q={test}', 'Check path placeholder 3');
+is($app->endpoint('check3' => {
+  placeholder => 'try1',
+  try => 'try2'
+}), '/try1/try2?q={test}', 'Check path placeholder 3');
+is($app->endpoint('check3' => {
+  placeholder => 'try1',
+  try => 'try2',
+  test => 'try3'
+}), '/try1/try2?q=try3', 'Check path placeholder 3');
