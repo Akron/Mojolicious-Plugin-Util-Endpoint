@@ -1,3 +1,6 @@
+0.06 2012-10-30
+        - Small improvements of the documentation.
+
 0.05 2012-10-30
         - Add setting function to endpoint helper.
 	- Small improvements of the test suite.

@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -275,7 +275,7 @@ Returns the route.
 
   # In Controller:
   #   Set endpoints:
-  $self->endpoint(hub => 'http://pubsubhubbub.appspot.com/');
+  $self->endpoint(hub => 'http://sojolicio.us/search?q={searchTerm}');
   $self->endpoint(hub => Mojo::URL->new('http://pubsubhubbub.appspot.com/'));
 
   #   Get endpoints:
