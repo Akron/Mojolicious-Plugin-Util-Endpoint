@@ -286,11 +286,12 @@ Returns the route.
   <%= endpoint 'webfinger' %>
 
 Get or set endpoints defined for a specific service.
-For setting accepts the name of the endpoint and
-a either a string with the endpoint URI or a L<Mojo::URL> object.
 
-Fr getting it accepts the name of the endpoint and
-additional stash values for the route.
+For setting it accepts the name of the endpoint and
+either a string with the endpoint URI or a L<Mojo::URL> object.
+
+For getting it accepts the name of the endpoint and
+additional stash values for the route as a hash reference.
 These stash values override existing stash values from
 the controller and fill the template variables.
 
