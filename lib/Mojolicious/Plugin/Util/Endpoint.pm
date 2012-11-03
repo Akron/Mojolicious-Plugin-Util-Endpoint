@@ -84,8 +84,6 @@ sub register {
 	return $c->url_for($name)->to_abs->to_string;
       };
 
-      # Todo: Directly return full path if no placeholder is in effect
-
       # Get url for route
       my $endpoint_url = $endpoints{$name}->clone;
 
@@ -108,6 +106,9 @@ sub register {
       # Unescape template variables
       $endpoint =~
 	s/\%7[bB](.+?)\%7[dD]/'{' . b($1)->url_unescape . '}'/ge;
+
+      # No placeholders in effect
+      return $endpoint unless index($endpoint,'{') >= 0;
 
       # Get stash or defaults hash
       my $stash_param = ref($c) eq 'Mojolicious::Controller' ?
