@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -141,7 +141,7 @@ sub register {
 
 	# Reset search position
 	# Todo: (not exact if it was optional)
-	pos($endpoint) = $p + length($fill);
+	pos($endpoint) = $p + length($fill || '');
       };
 
       # Ignore optional placeholders

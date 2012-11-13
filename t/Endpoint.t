@@ -9,7 +9,7 @@ BEGIN {
   unshift(@INC, '../../lib', '../lib');
 };
 
-use Test::More tests => 42;
+use Test::More tests => 46;
 use Test::Mojo;
 
 use Mojolicious::Lite;
@@ -253,3 +253,35 @@ is($app->endpoint('check3' => {
   try => 'try2',
   test => 'try3'
 }), '/try1/try2?q=try3', 'Check path placeholder 3');
+
+my $r_test_5 = $app->routes->route('/opensearch.xml');
+
+ok($r_test_5->endpoint(
+  opensearch => {
+    query => [
+      q => '{searchTerms}',
+      count => '{count?}',
+      startIndex => '{startIndex?}',
+      startPage => '{startPage?}',
+      format => '{format?}'
+    ]
+  }
+), 'Opensearch Test 1');
+
+is ($app->endpoint('opensearch'),
+    '/opensearch.xml?q={searchTerms}&' .
+      'count={count?}&startIndex={startIndex?}&' .
+	'startPage={startPage?}&format={format?}',
+    'Opensearch Test 2');
+
+is ($app->endpoint('opensearch' => { format => 'rss'}),
+    '/opensearch.xml?q={searchTerms}&' .
+      'count={count?}&startIndex={startIndex?}&' .
+	'startPage={startPage?}&format=rss',
+    'Opensearch Test 3');
+
+is ($app->endpoint('opensearch' => { format => 'atom'}),
+    '/opensearch.xml?q={searchTerms}&' .
+      'count={count?}&startIndex={startIndex?}&' .
+	'startPage={startPage?}&format=atom',
+    'Opensearch Test 4');
