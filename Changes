@@ -1,3 +1,6 @@
+0.08 2012-11-19
+        - Small bugfix regarding empty queries.
+
 0.07 2012-11-13
         - Small bugfix regarding warnings.
 

@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -153,6 +153,9 @@ sub register {
 	  s/\&$//g;
 	};
       };
+
+      # Strip empty query marker
+      $endpoint =~ s/\?$//;
 
       return $endpoint;
     });

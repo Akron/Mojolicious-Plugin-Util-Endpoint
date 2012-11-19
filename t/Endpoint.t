@@ -9,7 +9,7 @@ BEGIN {
   unshift(@INC, '../../lib', '../lib');
 };
 
-use Test::More tests => 46;
+use Test::More tests => 48;
 use Test::Mojo;
 
 use Mojolicious::Lite;
@@ -285,3 +285,8 @@ is ($app->endpoint('opensearch' => { format => 'atom'}),
       'count={count?}&startIndex={startIndex?}&' .
 	'startPage={startPage?}&format=atom',
     'Opensearch Test 4');
+
+
+ok($app->endpoint('opensearch-2' => '?peter={a?}'), 'Nearly empty endpoint');
+
+is($app->endpoint('opensearch-2' => { '?' => undef }), '', 'Nearly empty endpoint');
