@@ -233,7 +233,7 @@ but includes support for template URIs with parameters
 
 =head1 METHODS
 
-=head2 C<register>
+=head2 register
 
   # Mojolicious
   $app->plugin('Util::Endpoint');
@@ -246,7 +246,7 @@ Called when registering the plugin.
 
 =head1 SHORTCUTS
 
-=head2 C<endpoint>
+=head2 endpoint
 
   my $rs = $mojo->routes
   my $r = $rs->route('/suggest')->endpoint(
@@ -275,7 +275,7 @@ Returns the route.
 
 =head1 HELPERS
 
-=head2 C<endpoint>
+=head2 endpoint
 
   # In Controller:
   #   Set endpoints:
@@ -316,7 +316,7 @@ If the defined endpoint can't be found, the value for C<url_for>
 is returned.
 
 
-=head2 C<get_endpoints>
+=head2 get_endpoints
 
   # In Controller:
   my $hash = $self->get_endpoints;
@@ -332,7 +332,7 @@ B<Note:> This helper is EXPERIMENTAL and may be deprecated in further releases.
 
 =head1 COMMANDS
 
-=head2 C<endpoints>
+=head2 endpoints
 
   $ perl app.pl endpoints
 
@@ -351,7 +351,7 @@ L<Mojolicious> (best with SSL support).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011-2012, Nils Diewald.
+Copyright (C) 2011-2013, Nils Diewald.
 
 This program is free software, you can redistribute it
 and/or modify it under the same terms as Perl.
