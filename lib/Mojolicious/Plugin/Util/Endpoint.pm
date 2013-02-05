@@ -25,7 +25,7 @@ sub register {
 
       # Endpoint already defined
       if (exists $endpoints{$name}) {
-	$mojo->log->debug(qq{Route endpoint "$name" already defined.});
+	$mojo->log->debug(qq{Route endpoint "$name" already defined});
 	return $route;
       };
 
@@ -80,7 +80,7 @@ sub register {
 
       # Endpoint undefined
       unless (defined $endpoints{$name}) {
-	$c->app->log->warn("No endpoint defined for $name.");
+	$c->app->log->warn("No endpoint defined for $name");
 	return $c->url_for($name)->to_abs->to_string;
       };
 
@@ -93,9 +93,7 @@ sub register {
       for ($endpoint_url) {
 	$_->host($req_url->host) unless $_->host;
 	unless ($_->scheme) {
-	  if ($_->host) {
-	    $_->scheme($req_url->scheme || 'http');
-	  };
+	  $_->scheme($req_url->scheme || 'http') if $_->host;
 	};
 	$_->port($req_url->port) unless $_->port;
       };

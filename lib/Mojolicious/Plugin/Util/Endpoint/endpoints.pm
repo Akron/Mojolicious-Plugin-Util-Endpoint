@@ -47,12 +47,14 @@ __END__
 
 Mojolicious::Plugin::Util::Endpoint::endpoints - Show endpoints
 
+
 =head1 SYNOPSIS
 
   use Mojolicious::Plugin::Util::Endpoint::endpoints;
 
   my $ep = Mojolicious::Plugin::Util::Endpoint::endpoints->new;
   $ep->run;
+
 
 =head1 DESCRIPTION
 
@@ -70,12 +72,14 @@ L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
 attributes from L<Mojo::Command> and implements the following
 new ones.
 
+
 =head2 description
 
   my $description = $ep->description;
-  $ep            = $ep->description('Foo!');
+  $ep = $ep->description('Foo!');
 
 Short description of this command, used for the command list.
+
 
 =head2 usage
 
@@ -89,6 +93,7 @@ Usage information for this command, used for the help screen.
 
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
 methods from L<Mojo::Command> and implements the following new ones.
+
 
 =head2 run
 
