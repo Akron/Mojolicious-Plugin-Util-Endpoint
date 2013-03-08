@@ -45,8 +45,7 @@ __END__
 
 =head1 NAME
 
-Mojolicious::Plugin::Util::Endpoint::endpoints - Show endpoints
-
+Mojolicious::Plugin::Util::Endpoint::endpoints - Show template URIs
 
 =head1 SYNOPSIS
 

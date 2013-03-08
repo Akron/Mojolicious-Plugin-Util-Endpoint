@@ -1,6 +1,7 @@
 0.09 2013-02-05
         - Update year.
 	- Documentation tweaks.
+	- Change title of endpoints command.
 
 0.08 2012-11-19
         - Small bugfix regarding empty queries.
