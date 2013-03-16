@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -91,11 +91,16 @@ sub register {
       my $req_url = $c->req->url->to_abs;
 
       for ($endpoint_url) {
-	$_->host($req_url->host) unless $_->host;
+	unless ($_->host) {
+	  $_->host($req_url->host);
+
+	  # Only set port if host is set
+	  $_->port($req_url->port) unless $_->port;
+	};
+
 	unless ($_->scheme) {
 	  $_->scheme($req_url->scheme || 'http') if $_->host;
 	};
-	$_->port($req_url->port) unless $_->port;
       };
 
       # Convert object to string

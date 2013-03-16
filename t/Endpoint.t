@@ -9,7 +9,7 @@ BEGIN {
   unshift(@INC, '../../lib', '../lib');
 };
 
-use Test::More tests => 48;
+use Test::More;
 use Test::Mojo;
 
 use Mojolicious::Lite;
@@ -290,3 +290,13 @@ is ($app->endpoint('opensearch' => { format => 'atom'}),
 ok($app->endpoint('opensearch-2' => '?peter={a?}'), 'Nearly empty endpoint');
 
 is($app->endpoint('opensearch-2' => { '?' => undef }), '', 'Nearly empty endpoint');
+
+ok(my $c = Mojolicious::Controller->new, 'New Controller');
+
+ok($c->app($app), 'Set App to controller');
+
+ok($c->req->url->port('23456'), 'Set port');
+is($c->endpoint('test9'), 'http://grimms-abenteuer.de/test?q={try}',
+   'Test9 with port');
+
+done_testing;

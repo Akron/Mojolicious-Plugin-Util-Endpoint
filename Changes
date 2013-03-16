@@ -1,7 +1,8 @@
-0.09 2013-02-05
+0.09 2013-03-16
         - Update year.
 	- Documentation tweaks.
 	- Change title of endpoints command.
+	- Small bugfix in port setting.
 
 0.08 2012-11-19
         - Small bugfix regarding empty queries.
