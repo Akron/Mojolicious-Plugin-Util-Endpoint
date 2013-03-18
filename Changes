@@ -1,3 +1,8 @@
+0.10 2013-03-18
+        - Partially reimplemented due to
+	  a bug with mounted apps.
+	- Update dependencies.
+
 0.09 2013-03-16
         - Update year.
 	- Documentation tweaks.
