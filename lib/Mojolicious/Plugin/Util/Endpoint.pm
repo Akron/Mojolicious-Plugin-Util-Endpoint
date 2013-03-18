@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -165,7 +165,7 @@ sub register {
       $base_path->parts([]);
 
       # Interpolate url for query parameters
-      return _interpolate($url->to_string, \%values);
+      return _interpolate($url->to_abs->to_string, \%values);
     }
   );
 
