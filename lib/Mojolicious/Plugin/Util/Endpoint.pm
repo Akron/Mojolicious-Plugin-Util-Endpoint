@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Mojo::ByteStream 'b';
 use Mojo::URL;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -17,6 +17,37 @@ sub register {
 
   # Add 'endpoints' command
   push @{$mojo->commands->namespaces}, __PACKAGE__;
+
+  # Add 'endpoint2' shortcut
+  $mojo->routes->add_shortcut(
+    endpoint2 => sub {
+      my ($route, $name, $param) = @_;
+
+      # Endpoint already defined
+      if (exists $endpoints{$name}) {
+	$mojo->log->debug(qq{Route endpoint "$name" already defined});
+	return $route;
+      };
+
+      # Route defined
+      $route->name($name);
+
+      # Search for placeholders
+      my %placeholders;
+
+      # Initial match
+      $route->pattern->match('/');
+
+      my $r = $route;
+      while ($r) {
+	warn $mojo->dumper($r->pattern->tree);
+	$r = $r->parent;
+      };
+
+#      warn $mojo->dumper($p->constraints);
+
+    }
+  );
 
   # Add 'endpoint' shortcut
   $mojo->routes->add_shortcut(
