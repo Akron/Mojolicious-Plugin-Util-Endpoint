@@ -47,7 +47,7 @@ sub register {
       my $endpoint_url =
 	$mojo->url_for(
 	  $name => %placeholders
-	)->to_abs->clone;
+	)->clone;
 
       for my $url ($endpoint_url) {
 	foreach (qw/host port scheme query/) {
