@@ -36,10 +36,13 @@ sub register {
       # Set to stash
       $endpoints{$name} = $param // {};
 
+      # Return route for piping
       return $route;
     }
   );
 
+
+  # Add 'endpoint' helper
   $mojo->helper(
     endpoint => sub {
       my $c = shift;
@@ -62,16 +65,21 @@ sub register {
 	return $c->url_for($name)->to_abs->to_string;
       };
 
+      # Set values
       my %values = (
 	$c->isa('Mojolicious::Controller') ? %{$c->stash} : %{$c->defaults},
 	format => undef,
 	%$values
       );
 
+      # Return interpolated string
       if (blessed $endpoints{$name} && $endpoints{$name}->isa('Mojo::URL')) {
 	return _interpolate($endpoints{$name}->to_abs->to_string, \%values);
       };
 
+      # The following is based on url_for of Mojolicious::Controller
+      # and parts of path_for in Mojolicious::Routes::Route
+      # Get match object
       my $match;
       unless ($match = $c->match) {
 	$match = Mojolicious::Routes::Match->new(get => '/');
@@ -85,8 +93,10 @@ sub register {
       my $base = $url->base;
       $base->userinfo(undef);
 
+      # Get parameters
       my $param = $endpoints{$name};
 
+      # Set parameters to url
       $url->scheme($param->{scheme}) if $param->{scheme};
       $url->port($param->{port}) if $param->{port};
       if ($param->{host}) {
@@ -95,23 +105,34 @@ sub register {
 	$url->scheme('http') unless $url->scheme;
       };
 
+      # Clone query
       $url->query( [@{$param->{query}}] ) if $param->{query};
 
+      # Get path
       my $path = $url->path;
 
+      # Lookup match
       my $r = $match->root->lookup($name);
 
+      # Interpolate path
       my @parts;
       while ($r) {
 	my $p = '';
 	foreach my $part (@{$r->pattern->tree}) {
+
 	  given ($part->[0]) {
+
+	    # Slash
 	    when ('slash') {
 	      $p .= '/';
 	    }
+
+	    # Text
 	    when ('text') {
 	      $p .= $part->[1];
 	    }
+
+	    # Various wildcards
 	    when ([qw/wildcard placeholder relaxed/]) {
 	      if (exists $values{$part->[1]}) {
 		$p .= $values{$part->[1]};
@@ -122,10 +143,15 @@ sub register {
 	    }
 	  };
 	};
+
+	# Prepend to path array
 	unshift(@parts, $p);
+
+	# Go up one level till root
 	$r = $r->parent;
       };
 
+      # Set path
       $path->parse(join('', @parts)) if @parts;
 
       # Fix trailing slash
@@ -138,6 +164,7 @@ sub register {
       unshift @{$path->parts}, @{$base_path->parts};
       $base_path->parts([]);
 
+      # Interpolate url for query parameters
       return _interpolate($url->to_string, \%values);
     }
   );
@@ -160,9 +187,11 @@ sub register {
 };
 
 
+# Interpolate templates
 sub _interpolate {
   my $endpoint = shift;
 
+  # Decode escaped symbols
   $endpoint =~
     s/\%7[bB](.+?)\%7[dD]/'{' . b($1)->url_unescape . '}'/ge;
 
@@ -180,7 +209,7 @@ sub _interpolate {
     my $fill = undef;
 
     # Look in param
-    if (exists $param->{$val} && $param->{$val}) {
+    if ($param->{$val}) {
       $fill = b($param->{$val})->url_escape;
       $endpoint =~ s/\{$val\??\}/$fill/;
     };
