@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -61,7 +61,7 @@ sub register {
 
       # Endpoint undefined
       unless (defined $endpoints{$name}) {
-	$c->app->log->warn("No endpoint defined for $name");
+	$c->app->log->debug("No endpoint defined for $name");
 	return $c->url_for($name)->to_abs->to_string;
       };
 
