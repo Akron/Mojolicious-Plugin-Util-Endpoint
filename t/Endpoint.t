@@ -2,8 +2,6 @@
 use strict;
 use warnings;
 
-$|++;
-
 BEGIN {
   our @INC;
   unshift(@INC, '../../lib', '../lib');

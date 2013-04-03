@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards

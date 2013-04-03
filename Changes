@@ -1,3 +1,7 @@
+0.13 2013-04-03
+        - Small improvement to documentation.
+	- Improved test suite.
+
 0.12 2013-03-22
         - Made warning for undefined endpoints a
           debug information.
