@@ -71,12 +71,12 @@ sub register {
       unless (defined $endpoints{$name}) {
 
 	# Interpolate string
-	return _interpolate($name, \%values);
+	return _interpolate($name, \%values, $values);
       };
 
       # Return interpolated string
       if (blessed $endpoints{$name} && $endpoints{$name}->isa('Mojo::URL')) {
-	return _interpolate($endpoints{$name}->to_abs->to_string, \%values);
+	return _interpolate($endpoints{$name}->to_abs->to_string, \%values, $values);
       };
 
       # The following is based on url_for of Mojolicious::Controller
@@ -167,7 +167,7 @@ sub register {
       $base_path->parts([]);
 
       # Interpolate url for query parameters
-      return _interpolate($url->to_abs->to_string, \%values);
+      return _interpolate($url->to_abs->to_string, \%values, $values);
     }
   );
 
@@ -198,6 +198,7 @@ sub _interpolate {
     s/\%7[bB](.+?)\%7[dD]/'{' . b($1)->url_unescape . '}'/ge;
 
   my $param = shift;
+  my $orig_param = shift;
 
   # Interpolate template
   pos($endpoint) = 0;
@@ -214,6 +215,18 @@ sub _interpolate {
     if ($param->{$val}) {
       $fill = b($param->{$val})->url_escape;
       $endpoint =~ s/\{$val\??\}/$fill/;
+    }
+
+    elsif (exists $orig_param->{$val}) {
+
+      # Todo: Similar to below
+      for ($endpoint) {
+	s/(?<=[\&\?])[^\}][^=]*?=\{$val\??\}//g;
+	s/^([^\?]+?)([\/\.])\{$val\??\}\2/$1$2/g;
+	s/^([^\?]+?)\{$val\??\}/$1/g;
+	s/([\?\&])\&*/$1/g;
+	s/\&$//g;
+      };
     };
 
     # Reset search position
@@ -225,7 +238,7 @@ sub _interpolate {
   if (exists $param->{'?'} &&
 	!defined $param->{'?'}) {
     for ($endpoint) {
-      s/(?<=[\&\?])[^=]+?=\{[^\?\}]+?\?\}//g;
+      s/(?<=[\&\?])[^\}][^=]*?=\{[^\?\}]+?\?\}//g or last;
       s/([\?\&])\&*/$1/g;
       s/\&$//g;
     };

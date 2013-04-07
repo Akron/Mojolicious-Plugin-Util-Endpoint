@@ -1,6 +1,8 @@
 0.13 2013-04-07
         - Allow interpolation of arbitrary urls.
         - Small improvement to documentation.
+	- Support undefining placeholders in path, domain and parameters.
+	- Small performance improvement for '?' => undef.
 	- Improved test suite.
 
 0.12 2013-03-22

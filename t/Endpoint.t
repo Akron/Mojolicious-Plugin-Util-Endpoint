@@ -348,5 +348,22 @@ is($app->endpoint(
   'Arbitrary template url'
 );
 
+is($app->endpoint(
+  'http://sojolicio.us/{user}/webfinger?resource={uri}&rel={rel?}' => {
+    uri => undef
+  }),
+  'http://sojolicio.us/{user}/webfinger?rel={rel?}',
+  'Arbitrary template url'
+);
+
+is($app->endpoint(
+  'http://sojolicio.us/{user?}/webfinger?resource={uri}&rel={rel?}' => {
+    uri => undef,
+    user => undef
+  }),
+  'http://sojolicio.us/webfinger?rel={rel?}',
+  'Arbitrary template url'
+);
+
 
 done_testing;
