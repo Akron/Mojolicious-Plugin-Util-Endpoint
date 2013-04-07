@@ -8,6 +8,7 @@ our $VERSION = '0.13';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
+# Todo: Allow parsing of template URIs
 
 # Endpoint hash
 our %endpoints;
@@ -59,18 +60,19 @@ sub register {
 	return ($endpoints{$name} = $values->clone);
       };
 
-      # Endpoint undefined
-      unless (defined $endpoints{$name}) {
-	$c->app->log->debug("No endpoint defined for $name");
-	return $c->url_for($name)->to_abs->to_string;
-      };
-
       # Set values
       my %values = (
 	$c->isa('Mojolicious::Controller') ? %{$c->stash} : %{$c->defaults},
 	format => undef,
 	%$values
       );
+
+      # Endpoint undefined
+      unless (defined $endpoints{$name}) {
+
+	# Interpolate string
+	return _interpolate($name, \%values);
+      };
 
       # Return interpolated string
       if (blessed $endpoints{$name} && $endpoints{$name}->isa('Mojo::URL')) {
@@ -343,6 +345,13 @@ Returns the route.
   return $self->endpoint('webfinger');
   return $self->endpoint(webfinger => { user => 'me' } );
 
+  # Interpolate arbitrary template URIs
+  return $self->endpoint(
+    'http://sojolicio.us/.well-known/webfinger?resource={uri}&rel={rel?}' => {
+      'uri' => 'acct:akron@sojolicio.us',
+      '?'   => undef
+    });
+
   # In Template:
   <%= endpoint 'webfinger' %>
 
@@ -351,8 +360,8 @@ Get or set endpoints defined for a specific service.
 For setting it accepts the name of the endpoint and
 either a string with the endpoint URI or a L<Mojo::URL> object.
 
-For getting it accepts the name of the endpoint and
-additional stash values for the route as a hash reference.
+For getting it accepts the name of the endpoint or an arbitrary
+template URI and additional stash values for the route as a hash reference.
 These stash values override existing stash values from
 the controller and fill the template variables.
 

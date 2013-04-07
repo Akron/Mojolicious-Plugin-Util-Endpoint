@@ -315,4 +315,38 @@ is($app->endpoint('test-wildcards' => { 'fine' => 'jai' }),
    'https://endpoi.nt/test2/jai/peter-{huhu}/{all}/{hui}',
    'Correct placeholder interpolation');
 
+is($app->endpoint(
+  'http://sojolicio.us/.well-known/webfinger?resource={uri}' => {
+    uri => 'acct:akron@sojolicio.us'
+  }),
+  'http://sojolicio.us/.well-known/webfinger?resource=acct%3Aakron%40sojolicio.us',
+  'Arbitrary template url'
+);
+
+is($app->endpoint(
+  'http://sojolicio.us/.well-known/webfinger?resource={uri}&res={uri}' => {
+    uri => 'acct:akron@sojolicio.us'
+  }),
+  'http://sojolicio.us/.well-known/webfinger?resource=acct%3Aakron%40sojolicio.us&res=acct%3Aakron%40sojolicio.us',
+  'Arbitrary template url'
+);
+
+is($app->endpoint(
+  'http://sojolicio.us/.well-known/webfinger?resource={uri}&rel={rel?}' => {
+    uri => 'acct:akron@sojolicio.us'
+  }),
+  'http://sojolicio.us/.well-known/webfinger?resource=acct%3Aakron%40sojolicio.us&rel={rel?}',
+  'Arbitrary template url'
+);
+
+is($app->endpoint(
+  'http://sojolicio.us/.well-known/webfinger?resource={uri}&rel={rel?}' => {
+    uri => 'acct:akron@sojolicio.us',
+    '?' => undef
+  }),
+  'http://sojolicio.us/.well-known/webfinger?resource=acct%3Aakron%40sojolicio.us',
+  'Arbitrary template url'
+);
+
+
 done_testing;

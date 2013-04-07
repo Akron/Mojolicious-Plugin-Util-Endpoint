@@ -1,4 +1,5 @@
-0.13 2013-04-03
+0.13 2013-04-07
+        - Allow interpolation of arbitrary urls.
         - Small improvement to documentation.
 	- Improved test suite.
 
