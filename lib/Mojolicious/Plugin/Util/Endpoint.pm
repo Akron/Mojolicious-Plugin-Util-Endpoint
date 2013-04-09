@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 # Todo: Update to https://tools.ietf.org/html/rfc6570
 # Todo: Allow for changing scheme, port, host etc. afterwards
@@ -266,11 +266,11 @@ Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
 
 =head1 SYNOPSIS
 
-  # Mojolicious
-  $self->plugin('Util::Endpoint');
-
   # Mojolicious::Lite
   plugin 'Util::Endpoint';
+
+  # Mojolicious
+  $self->plugin('Util::Endpoint');
 
   my $rs = $mojo->routes;
 
