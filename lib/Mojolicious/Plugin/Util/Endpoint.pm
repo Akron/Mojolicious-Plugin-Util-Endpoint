@@ -217,15 +217,17 @@ sub _interpolate {
       $endpoint =~ s/\{$val\??\}/$fill/;
     }
 
+    # unset specific parameters
     elsif (exists $orig_param->{$val}) {
 
-      # Todo: Similar to below
+      # Delete specific parameters
       for ($endpoint) {
-	s/(?<=[\&\?])[^\}][^=]*?=\{$val\??\}//g;
+	if (s/(?<=[\&\?])[^\}][^=]*?=\{$val\??\}//g) {
+	  s/([\?\&])\&*/$1/g;
+	  s/\&$//g;
+	};
 	s/^([^\?]+?)([\/\.])\{$val\??\}\2/$1$2/g;
 	s/^([^\?]+?)\{$val\??\}/$1/g;
-	s/([\?\&])\&*/$1/g;
-	s/\&$//g;
       };
     };
 
