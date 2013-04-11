@@ -190,7 +190,7 @@ __END__
 
 =head1 NAME
 
-Mojolicious::Plugin::Util::Endpoint - Use template URIs in Mojolicious
+Mojolicious::Plugin::Util::Endpoint - Use Template URIs in Mojolicious
 
 
 =head1 SYNOPSIS
