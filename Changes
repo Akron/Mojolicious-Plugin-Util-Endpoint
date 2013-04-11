@@ -1,3 +1,25 @@
+0.14 2013-04-09
+        - Improve documentation.
+
+0.13 2013-04-07
+        - Allow interpolation of arbitrary urls.
+        - Small improvement to documentation.
+	- Support undefining placeholders in path, domain and parameters.
+	- Small performance improvement for '?' => undef.
+	- Improved test suite.
+
+0.12 2013-03-22
+        - Made warning for undefined endpoints a
+          debug information.
+
+0.11 2013-03-18
+        - Fixed a newly introduced relative path bug.
+
+0.10 2013-03-18
+        - Partially reimplemented due to
+	  a bug with mounted apps.
+	- Update dependencies.
+
 0.09 2013-03-16
         - Update year.
 	- Documentation tweaks.

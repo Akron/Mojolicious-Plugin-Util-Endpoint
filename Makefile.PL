@@ -13,7 +13,7 @@ WriteMakefile(
     'Test::More' => 0
   },
   PREREQ_PM => {
-    'Mojolicious' => 3.43
+    'Mojolicious' => 3.86
   },
   LICENSE      => 'perl',
   META_MERGE   => {

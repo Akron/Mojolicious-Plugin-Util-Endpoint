@@ -9,7 +9,10 @@ get '/test' => sub {
   shift->render_text('Mounted.');
 };
 
-(get '/probe')->to(cb => sub { shift->render_text('Mounted Endpoint.')})->endpoint('probe')->name('probe2');
+(get '/probe')->to(
+  cb => sub {
+    shift->render_text('Mounted Endpoint.')
+  })->endpoint('probe');
 
 get '/get-ep' => sub {
   my $c = shift;
@@ -18,7 +21,7 @@ get '/get-ep' => sub {
 
 get '/get-url' => sub {
   my $c = shift;
-  return $c->render_text($c->url_for('probe2'));
+  return $c->render_text($c->url_for('probe'));
 };
 
 app->start;

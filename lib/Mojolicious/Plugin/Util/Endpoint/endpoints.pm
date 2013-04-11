@@ -7,6 +7,8 @@ has description => "Show available endpoints.\n";
 has usage       => <<"EOF";
 usage: $0 endpoints
 
+  perl app.pl endpoints
+
 EOF
 
 
@@ -68,7 +70,7 @@ It is normally started from the command line:
 =head1 ATTRIBUTES
 
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
-attributes from L<Mojo::Command> and implements the following
+attributes from L<Mojolicious::Command> and implements the following
 new ones.
 
 
@@ -91,7 +93,7 @@ Usage information for this command, used for the help screen.
 =head1 METHODS
 
 L<Mojolicious::Plugin::Util::Endpoint::endpoints> inherits all
-methods from L<Mojo::Command> and implements the following new ones.
+methods from L<Mojolicious::Command> and implements the following new ones.
 
 
 =head2 run
