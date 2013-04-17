@@ -10,10 +10,11 @@ WriteMakefile(
   ABSTRACT     => 'Use template URIs in Mojolicious',
   VERSION_FROM => 'lib/Mojolicious/Plugin/Util/Endpoint.pm',
   BUILD_REQUIRES => {
-    'Test::More' => 0
+    'Test::More' => 0,
+    'Test::Output' => 0
   },
   PREREQ_PM => {
-    'Mojolicious' => 3.86
+    'Mojolicious' => 3.93
   },
   LICENSE      => 'perl',
   META_MERGE   => {

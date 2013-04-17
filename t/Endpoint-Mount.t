@@ -11,6 +11,8 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
+use_ok('Mojolicious::Plugin::Util::Endpoint::endpoints');
+
 get '/test' => sub {
   shift->render(text => 'Not mounted.');
 };
@@ -29,6 +31,5 @@ my $app = $t->app;
 
 $t->get_ok('/mounted/get-ep')->content_like(qr{/mounted/probe$});
 $t->get_ok('/mounted/get-url')->content_like(qr{/mounted/probe$});
-
 
 done_testing;
