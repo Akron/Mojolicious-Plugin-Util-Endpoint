@@ -28,6 +28,8 @@ $r_test->endpoint('test1' =>
 		      scheme => 'https'
 		    });
 
+$r_test->route('/fun')->name('fun');
+
 is($app->endpoint('test1'),
    "https://$endpoint_host/test",
    'endpoint 1');
@@ -364,6 +366,8 @@ is($app->endpoint(
   'http://sojolicio.us/webfinger?rel={rel?}',
   'Arbitrary template url'
 );
+
+is($app->endpoint('fun'), '/test/fun', 'named route');
 
 
 done_testing;

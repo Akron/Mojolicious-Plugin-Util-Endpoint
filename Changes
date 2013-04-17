@@ -1,5 +1,6 @@
-0.14 2013-04-09
+0.14 2013-04-17
         - Improve documentation.
+	- Fixed bug with named routes.
 
 0.13 2013-04-07
         - Allow interpolation of arbitrary urls.

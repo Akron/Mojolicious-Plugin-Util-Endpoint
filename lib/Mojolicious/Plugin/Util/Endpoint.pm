@@ -68,6 +68,11 @@ sub register {
       # Endpoint undefined
       unless (defined $endpoints{$name}) {
 
+	# Named route
+	if ($name !~ m!^([^:]+:)?/?/!) {
+	  return$c->url_for($name)->to_abs->to_string;
+	};
+
 	# Interpolate string
 	return _interpolate($name, \%values, $values);
       };
