@@ -6,22 +6,22 @@ use lib '../lib';
 plugin 'Util::Endpoint';
 
 get '/test' => sub {
-  shift->render_text('Mounted.');
+  shift->render( text => 'Mounted.' );
 };
 
 (get '/probe')->to(
   cb => sub {
-    shift->render_text('Mounted Endpoint.')
+    shift->render( text => 'Mounted Endpoint.' )
   })->endpoint('probe');
 
 get '/get-ep' => sub {
   my $c = shift;
-  return $c->render_text($c->endpoint('probe'));
+  return $c->render( text => $c->endpoint('probe') );
 };
 
 get '/get-url' => sub {
   my $c = shift;
-  return $c->render_text($c->url_for('probe'));
+  return $c->render( text => $c->url_for('probe') );
 };
 
 app->start;
