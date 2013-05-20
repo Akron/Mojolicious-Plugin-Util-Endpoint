@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 # Todo: Support alternative bases for https-paths
 # Todo: Update to https://tools.ietf.org/html/rfc6570
@@ -79,7 +79,7 @@ sub register {
       };
 
       # Return interpolated string
-      if (blessed($endpoints{$name}) && $endpoints{$name}->isa('Mojo::URL')) {
+      if (blessed $endpoints{$name} && $endpoints{$name}->isa('Mojo::URL')) {
 	return _interpolate(
 	  $endpoints{$name}->to_abs->to_string,
 	  \%values,
@@ -129,28 +129,26 @@ sub register {
       while ($r) {
 	my $p = '';
 	foreach my $part (@{$r->pattern->tree}) {
+	  my $t = $part->[0];
 
-	  given ($part->[0]) {
+	  # Slash
+	  if ($t eq 'slash') {
+	    $p .= '/';
+	  }
 
-	    # Slash
-	    when ('slash') {
-	      $p .= '/';
+	  # Text
+	  elsif ($t eq 'text') {
+	    $p .= $part->[1];
+	  }
+
+	  # Various wildcards
+	  elsif ($t =~ m/^(?:wildcard|placeholder|relaxed)$/) {
+	    if (exists $values{$part->[1]}) {
+	      $p .= $values{$part->[1]};
 	    }
-
-	    # Text
-	    when ('text') {
-	      $p .= $part->[1];
-	    }
-
-	    # Various wildcards
-	    when ([qw/wildcard placeholder relaxed/]) {
-	      if (exists $values{$part->[1]}) {
-		$p .= $values{$part->[1]};
-	      }
-	      else {
-		$p .= '{' . $part->[1] . '}';
-	      };
-	    }
+	    else {
+	      $p .= '{' . $part->[1] . '}';
+	    };
 	  };
 	};
 
@@ -418,6 +416,7 @@ Returns a hash of all endpoints, interpolated with the current
 controller stash.
 
 B<Note:> This helper is EXPERIMENTAL and may be deprecated in further releases.
+
 
 =head1 COMMANDS
 

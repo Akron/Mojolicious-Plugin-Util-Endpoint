@@ -4,7 +4,7 @@ use warnings;
 
 BEGIN {
   our @INC;
-  unshift(@INC, '../../lib', '../lib');
+  unshift(@INC, '../../lib', '../lib', 'lib');
 };
 
 use Test::More;

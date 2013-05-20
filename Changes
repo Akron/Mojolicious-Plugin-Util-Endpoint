@@ -1,3 +1,8 @@
+0.15 2013-05-20
+        - Fixed compatibility with Mojolicious 4.0 (Reneeb).
+	- Removed experimental given/when operations (Reneeb, Akron).
+	- Fixed randomized hash bug in t/Endpoint-Command.t.
+
 0.14 2013-04-17
         - Improve documentation.
 	- Fixed bug with named routes.

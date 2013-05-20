@@ -11,6 +11,8 @@ use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
 
+use lib '../lib';
+
 use_ok('Mojolicious::Plugin::Util::Endpoint::endpoints');
 
 get '/test' => sub {

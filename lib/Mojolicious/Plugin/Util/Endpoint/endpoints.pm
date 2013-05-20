@@ -29,8 +29,8 @@ sub run {
   return unless $endpoints;
 
   # Print all endpoints
-  while (my ($name, $path) = each %$endpoints) {
-    printf " %-20s %s\n", qq{"$name"}, $path;
+  foreach my $name (sort { $a cmp $b } keys %$endpoints) {
+    printf " %-20s %s\n", qq{"$name"}, $endpoints->{$name};
   };
   print "\n";
 
