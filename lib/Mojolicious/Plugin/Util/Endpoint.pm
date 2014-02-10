@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 # Todo: Support alternative bases for https-paths
 # Todo: Update to https://tools.ietf.org/html/rfc6570
@@ -306,8 +306,9 @@ Mojolicious::Plugin::Util::Endpoint - Use Template URIs in Mojolicious
 
 L<Mojolicious::Plugin::Util::Endpoint> is a plugin that
 allows for the simple establishment of endpoint URIs.
-This is similar to the C<url_for> method of L<Mojolicious::Controller>,
+This is similar to L<url_for|Mojolicious::Controller/url_for>,
 but includes support for template URIs with parameters
+following L<RFC6570|https://tools.ietf.org/html/rfc6570> Level 1
 (as used in, e.g., Host-Meta or OpenSearch).
 
 
@@ -439,7 +440,7 @@ L<Mojolicious> (best with SSL support).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011-2013, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2011-2014, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
 and/or modify it under the same terms as Perl.

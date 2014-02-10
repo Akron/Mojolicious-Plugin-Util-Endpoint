@@ -1,3 +1,6 @@
+0.16 2014-02-10
+        - Documentation tweaks regarding the template URI RFC.
+
 0.15 2013-05-20
         - Fixed compatibility with Mojolicious 4.0 (Reneeb).
 	- Removed experimental given/when operations (Reneeb, Akron).
