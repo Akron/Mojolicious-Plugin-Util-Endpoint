@@ -19,7 +19,7 @@ sub run {
   # Options
   local @ARGV = @_;
 
-  my $c = Mojolicious::Controller->new;
+  my $c = $self->app->build_controller;
   $c->app($self->app);
 
   # Get endpoints
