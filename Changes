@@ -1,3 +1,8 @@
+0.17 2014-04-14
+        - Fixed compatibility with Mojolicious 6.0 (vti).
+	  This was a contribution motivated by the
+          CPAN Pull Request Challenge - Thank you very much!
+
 0.16 2014-02-10
         - Documentation tweaks regarding the template URI RFC.
 

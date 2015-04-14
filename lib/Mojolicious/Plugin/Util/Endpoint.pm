@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 # Todo: Support alternative bases for https-paths
 # Todo: Update to https://tools.ietf.org/html/rfc6570
@@ -433,6 +433,11 @@ Show all endpoints of the app established by this plugin.
 L<Mojolicious> (best with SSL support).
 
 
+=head1 CONTRIBUTORS
+
+L<Viacheslav Tykhanovskyi|https://github.com/vti>
+
+
 =head1 AVAILABILITY
 
   https://github.com/Akron/Mojolicious-Plugin-Util-Endpoint
@@ -440,7 +445,7 @@ L<Mojolicious> (best with SSL support).
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011-2014, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2011-2015, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
 and/or modify it under the same terms as Perl.
