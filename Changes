@@ -1,3 +1,6 @@
+0.18 2014-04-18
+        - Fixed dependency.
+
 0.17 2014-04-14
         - Fixed compatibility with Mojolicious 6.0 (vti).
 	  This was a contribution motivated by the

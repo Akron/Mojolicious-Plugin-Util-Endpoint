@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 # Todo: Support alternative bases for https-paths
 # Todo: Update to https://tools.ietf.org/html/rfc6570
