@@ -4,7 +4,7 @@ use Mojo::ByteStream 'b';
 use Scalar::Util qw/blessed/;
 use Mojo::URL;
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 # Todo: Support alternative bases for https-paths
 # Todo: Update to https://tools.ietf.org/html/rfc6570
@@ -31,8 +31,10 @@ sub register {
 	return $route;
       };
 
+      $param //= {};
+
       # Route defined
-      $route->name($name);
+      $param->{route} = $route->name;
 
       # Set to stash
       $endpoints{$name} = $param // {};
@@ -71,7 +73,7 @@ sub register {
 
 	# Named route
 	if ($name !~ m!^([^:]+:)?/?/!) {
-	  return$c->url_for($name)->to_abs->to_string;
+	  return $c->url_for($name)->to_abs->to_string;
 	};
 
 	# Interpolate string
@@ -122,7 +124,7 @@ sub register {
       my $path = $url->path;
 
       # Lookup match
-      my $r = $match->root->lookup($name);
+      my $r = $match->root->find($param->{route});
 
       # Interpolate path
       my @parts;
@@ -349,10 +351,10 @@ Template parameters need curly brackets, optional
 template parameters need a question mark before
 the closing bracket.
 Optional path placeholders are currenty not supported.
-This also defines a name attribute to the route for
-using with C<url_for>.
 Returns the route.
 
+B<Warning>: Support for named routes to use with
+C<url_for> was dropped in v0.19.
 
 =head1 HELPERS
 

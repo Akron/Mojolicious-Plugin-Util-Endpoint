@@ -1,3 +1,7 @@
+0.19 2016-02-29
+        - Fixed for Mojolicious 6.48
+          (This removes support for named routes usable for url_for).
+
 0.18 2014-04-18
         - Fixed dependency.
 
