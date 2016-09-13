@@ -1,6 +1,7 @@
 blib
 log
 Sandbox
+cover_db
 public
 todo.org
 create-cpan.pl

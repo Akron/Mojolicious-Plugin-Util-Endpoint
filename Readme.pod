@@ -84,10 +84,10 @@ Template parameters need curly brackets, optional
 template parameters need a question mark before
 the closing bracket.
 Optional path placeholders are currenty not supported.
-This also defines a name attribute to the route for
-using with C<url_for>.
 Returns the route.
 
+B<Warning>: Support for named routes to use with
+C<url_for> was dropped in v0.19.
 
 =head1 HELPERS
 
@@ -180,7 +180,7 @@ L<Viacheslav Tykhanovskyi|https://github.com/vti>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011-2015, L<Nils Diewald|http://nils-diewald.de/>.
+Copyright (C) 2011-2016, L<Nils Diewald|http://nils-diewald.de/>.
 
 This program is free software, you can redistribute it
 and/or modify it under the same terms as Perl.
