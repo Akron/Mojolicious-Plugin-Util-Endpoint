@@ -1,3 +1,7 @@
+0.20 2016-09-13
+        - Improved test coverage.
+        - Improved access rights to be Kwalitee compliant.
+
 0.19 2016-02-29
         - Fixed for Mojolicious 6.48
           (This removes support for named routes usable for url_for).
