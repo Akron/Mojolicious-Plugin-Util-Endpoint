@@ -2,11 +2,6 @@
 use strict;
 use warnings;
 
-BEGIN {
-  our @INC;
-  unshift(@INC, '../../lib', '../lib');
-};
-
 use Test::More;
 use Test::Mojo;
 use Test::Output;
@@ -333,7 +328,7 @@ $r_test = $app->routes->route('/test2');
 my $r_test2 = $r_test->route('/:fine');
 my $r_test3 = $r_test2->route('/peter-*huhu');
 my $r_test4 = $r_test3->route('/#all');
-my $r_test5 = $r_test4->route('/(*hui)', hui => qr{\d+});
+my $r_test5 = $r_test4->route('/*hui', hui => qr{\d+});
 
 $r_test5->endpoint('test-wildcards' =>
 		    {
