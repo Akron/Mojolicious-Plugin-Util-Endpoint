@@ -28,7 +28,7 @@ $app->log->on(
 my $endpoint_host = 'endpoi.nt';
 
 # Set endpoint
-my $r_test = $app->routes->route('/test');
+my $r_test = $app->routes->any('/test');
 $r_test->endpoint(
   'test1' =>
     {
